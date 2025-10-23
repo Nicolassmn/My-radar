@@ -1,0 +1,52 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcsfml-dev build-essential
+
+      - name: Clean previous build
+        run: |
+          if [ -f ./myradar ]; then
+            echo "Binaire existant trouvé, nettoyage..."
+            make fclean
+          else
+            echo "Aucun binaire détecté, build propre."
+          fi
+
+      - name: Build project
+        run: make
+
+      - name: Test binary
+        run: |
+          if [ -f ./myradar ]; then
+            echo "Lancement test du binaire..."
+            ./myradar --help || true
+          else
+            echo "Erreur : binaire non généré"
+            exit 1
+          fi
+
+      - name: Upload binary to release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/heads/main')
+        with:
+          tag_name: latest
+          files: ./myradar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
