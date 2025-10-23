@@ -15,6 +15,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Cache build files
+        uses: actions/cache@v3
+        with:
+          path: |
+            **/*.o
+            myradar
+          key: ${{ runner.os }}-myradar-${{ hashFiles('**/*.c') }}
+
       - name: Install dependencies
         run: |
           sudo apt-get update
@@ -23,10 +31,7 @@ jobs:
       - name: Clean previous build
         run: |
           if [ -f ./myradar ]; then
-            echo "Binaire existant trouvé, nettoyage..."
             make fclean
-          else
-            echo "Aucun binaire détecté, build propre."
           fi
 
       - name: Build project
@@ -35,18 +40,25 @@ jobs:
       - name: Test binary
         run: |
           if [ -f ./myradar ]; then
-            echo "Lancement test du binaire..."
             ./myradar --help || true
           else
             echo "Erreur : binaire non généré"
             exit 1
           fi
 
-      - name: Upload binary to release
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: myradar-binary
+          path: ./myradar
+
+      - name: Create or update release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/heads/main')
         with:
           tag_name: latest
+          name: Latest Build
+          draft: false
+          prerelease: false
           files: ./myradar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
