@@ -41,7 +41,6 @@
 ```
 .
 ├── assets/
-├── image/
 ├── include/
 ├── music/
 └── src/

@@ -26,13 +26,13 @@ void init_window(game_t *game)
 
 static void split_tower(tower_t *tmp_tower)
 {
-    tmp_tower->sprite.texture = SFCF("image/tower.png", NULL);
+    tmp_tower->sprite.texture = SFCF("assets/tower.png", NULL);
     tmp_tower->sprite.sprite = sfSprite_create();
     tmp_tower->sprite.scale.x = 0.13;
     tmp_tower->sprite.scale.y = 0.13;
     tmp_tower->sprite.pos.x = tmp_tower->x;
     tmp_tower->sprite.pos.y = tmp_tower->y;
-    tmp_tower->radar.texture = SFCF("image/radar.png", NULL);
+    tmp_tower->radar.texture = SFCF("assets/radar.png", NULL);
     tmp_tower->radar.sprite = sfSprite_create();
     tmp_tower->radar.scale.x = 0.53 / (100 / tmp_tower->radian);
     tmp_tower->radar.scale.y = 0.53 / (100 / tmp_tower->radian);
@@ -63,7 +63,7 @@ void load_tower(game_t *game)
 
 static void split_plane(plane_t *plane)
 {
-    plane->sprite.texture = SFCF("image/avion.png", NULL);
+    plane->sprite.texture = SFCF("assets/avion.png", NULL);
     plane->sprite.sprite = sfSprite_create();
     plane->sprite.scale.x = 0.08;
     plane->sprite.scale.y = 0.08;
@@ -73,7 +73,7 @@ static void split_plane(plane_t *plane)
     plane->y = START_Y;
     plane->activate = true;
     plane->boom = false;
-    plane->france.texture = SFCF("image/france.png", NULL);
+    plane->france.texture = SFCF("assets/france.png", NULL);
     plane->france.sprite = sfSprite_create();
     plane->france.scale.x = 0.03;
     plane->france.scale.y = 0.03;
@@ -90,7 +90,7 @@ void load_plane(game_t *game)
         split_plane(plane);
         determinat_speed(plane);
         orientation(plane);
-        plane->rip.texture = SFCF("image/boom.png", NULL);
+        plane->rip.texture = SFCF("assets/boom.png", NULL);
         plane->rip.sprite = sfSprite_create();
         plane->rip.scale.x = 0.1;
         plane->rip.scale.y = 0.1;
@@ -156,7 +156,7 @@ void load_aircraft(game_t *game)
     game->key.iud = 1;
     game->key.start = 1;
     game->key.enties = 1;
-    BACKGROUND.texture = SFCF("image/background.jpg", NULL);
+    BACKGROUND.texture = SFCF("assets/background.jpg", NULL);
     BACKGROUND.sprite = sfSprite_create();
     BACKGROUND.scale.x = 1.076;
     BACKGROUND.scale.y = 1;
